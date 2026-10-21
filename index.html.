@@ -1,1 +1,190 @@
-index.html.
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171310">
+<title>Mano's Burguer Gestão</title>
+<style>
+:root{--bg:#100e0c;--panel:#201b17;--orange:#ff8b32;--cream:#fff0d7;--muted:#b8aaa0;--red:#e34d3e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:Arial,sans-serif}
+header{padding:24px 18px;background:#1a1511;border-bottom:1px solid #403027}
+header small{color:var(--orange);letter-spacing:2px;font-weight:bold}
+h1{font-size:23px;margin:8px 0 4px}
+header p{color:var(--muted);margin:0;font-size:13px}
+main{padding:16px;max-width:700px;margin:auto;padding-bottom:35px}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:15px}
+nav button{white-space:nowrap;background:var(--panel);color:var(--cream);border:1px solid #49362a;border-radius:10px;padding:12px}
+nav button.active,.primary{background:var(--orange);color:#24150b;border-color:var(--orange);font-weight:bold}
+h2{font-size:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card,.formbox{background:var(--panel);border:1px solid #3c2d23;border-radius:14px;padding:15px;margin-bottom:12px}
+.card small{color:var(--muted);display:block;margin-bottom:10px}
+.amount{font-size:22px;font-weight:bold;overflow-wrap:anywhere}
+.orange{color:var(--orange)}
+form{display:grid;gap:10px}
+input,select{width:100%;padding:13px;border-radius:9px;border:1px solid #544033;background:#130f0d;color:var(--cream);font-size:16px}
+button{cursor:pointer;font-size:14px}
+form button,.action{padding:13px;border:0;border-radius:9px}
+.listitem{padding:13px 0;border-bottom:1px solid #49362a;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.listitem:last-child{border:0}
+.listitem small{display:block;color:var(--muted);margin-top:5px}
+.delete{background:#40211c;color:#ffb0a6;border:0;border-radius:7px;padding:8px}
+.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.hidden{display:none}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+  <small>MANO'S BURGUER</small>
+  <h1>Gestão Inteligente 🍔</h1>
+  <p>Seu negócio organizado, um dia de cada vez.</p>
+</header>
+<main>
+<nav>
+<button class="active" data-tab="inicio">Painel</button>
+<button data-tab="vendas">Vendas</button>
+<button data-tab="despesas">Despesas</button>
+<button data-tab="estoque">Estoque</button>
+<button data-tab="cardapio">Cardápio</button>
+</nav>
+
+<section id="inicio">
+<h2>Resumo do negócio</h2>
+<div class="grid">
+<div class="card"><small>Vendas registradas</small><div class="amount orange" id="totalVendas">R$ 0,00</div></div>
+<div class="card"><small>Despesas registradas</small><div class="amount" id="totalDespesas">R$ 0,00</div></div>
+<div class="card"><small>Saldo das movimentações</small><div class="amount" id="saldo">R$ 0,00</div></div>
+<div class="card"><small>Vendas lançadas</small><div class="amount" id="qtdVendas">0</div></div>
+</div>
+<div class="formbox">
+<h3>Comece por aqui</h3>
+<p class="muted">Registre cada venda, lance suas despesas e mantenha seu estoque atualizado. O saldo é vendas menos despesas cadastradas; ainda não representa o lucro real se faltarem custos dos ingredientes e outras despesas.</p>
+</div>
+<h3>Últimas movimentações</h3>
+<div class="formbox" id="recentes"></div>
+</section>
+
+<section id="vendas" class="hidden">
+<h2>Registrar venda</h2>
+<div class="formbox">
+<form id="formVenda">
+<input name="produto" placeholder="Produto vendido" required>
+<input name="valor" type="number" min="0.01" step="0.01" placeholder="Valor recebido (R$)" required>
+<select name="pagamento"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Outro</option></select>
+<button class="primary">Salvar venda</button>
+</form>
+</div>
+<h3>Histórico de vendas</h3><div class="formbox" id="listaVendas"></div>
+</section>
+
+<section id="despesas" class="hidden">
+<h2>Registrar despesa</h2>
+<div class="formbox">
+<form id="formDespesa">
+<input name="descricao" placeholder="Ex.: carne, pão, gás" required>
+<input name="valor" type="number" min="0.01" step="0.01" placeholder="Valor pago (R$)" required>
+<button class="primary">Salvar despesa</button>
+</form>
+</div>
+<h3>Histórico de despesas</h3><div class="formbox" id="listaDespesas"></div>
+</section>
+
+<section id="estoque" class="hidden">
+<h2>Controle de estoque</h2>
+<div class="formbox">
+<form id="formEstoque">
+<input name="nome" placeholder="Ingrediente (ex.: carne)" required>
+<input name="quantidade" type="number" min="0" step="0.01" placeholder="Quantidade atual" required>
+<input name="unidade" placeholder="Unidade (kg, un., pacote...)" required>
+<input name="minimo" type="number" min="0" step="0.01" placeholder="Avisar quando chegar a" required>
+<button class="primary">Adicionar ao estoque</button>
+</form>
+</div>
+<div class="formbox" id="listaEstoque"></div>
+</section>
+
+<section id="cardapio" class="hidden">
+<h2>Cardápio e custos</h2>
+<div class="formbox">
+<form id="formProduto">
+<input name="nome" placeholder="Nome do hambúrguer" required>
+<input name="preco" type="number" min="0" step="0.01" placeholder="Preço de venda (R$)" required>
+<input name="custo" type="number" min="0" step="0.01" placeholder="Custo dos ingredientes (R$)" required>
+<button class="primary">Cadastrar hambúrguer</button>
+</form>
+</div>
+<div class="formbox" id="listaCardapio"></div>
+</section>
+
+<div class="formbox">
+<button class="action" id="exportar">Exportar meus dados</button>
+<p class="muted">Guarde uma cópia dos seus registros regularmente. Os dados ficam neste navegador.</p>
+</div>
+<footer>MANO'S BURGUER · Gestão do seu negócio</footer>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const brl = n => Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const hoje = () => new Date().toLocaleDateString('pt-BR');
+const ler = k => {try{return JSON.parse(localStorage.getItem('manos_'+k))||[]}catch(e){return []}};
+const gravar = (k,v) => localStorage.setItem('manos_'+k,JSON.stringify(v));
+let vendas=ler('vendas'), despesas=ler('despesas'), estoque=ler('estoque'), produtos=ler('produtos');
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');
+ document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));
+ $('#'+b.dataset.tab).classList.remove('hidden');
+});
+
+function lista(el,items,formatar,remover){
+ const area=$(el);
+ if(!items.length){area.innerHTML='<p class="muted">Nenhum registro por enquanto.</p>';return}
+ area.innerHTML='';
+ items.slice().reverse().forEach((item,revIndex)=>{
+  const idx=items.length-1-revIndex;
+  const div=document.createElement('div');div.className='listitem';
+  const info=document.createElement('div');
+  const titulo=document.createElement('strong');titulo.textContent=formatar(item).titulo;
+  const sub=document.createElement('small');sub.textContent=formatar(item).sub;
+  info.append(titulo,sub);
+  const del=document.createElement('button');del.className='delete';del.textContent='Excluir';
+  del.onclick=()=>{if(confirm('Excluir este registro?')){items.splice(idx,1);gravar(remover,items);render()}};
+  div.append(info,del);area.append(div);
+ });
+}
+function render(){
+ $('#totalVendas').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0));
+ $('#totalDespesas').textContent=brl(despesas.reduce((s,x)=>s+x.valor,0));
+ $('#saldo').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0)-despesas.reduce((s,x)=>s+x.valor,0));
+ $('#qtdVendas').textContent=vendas.length;
+ lista('#listaVendas',vendas,x=>({titulo:x.produto+' · '+brl(x.valor),sub:x.data+' · '+x.pagamento}),'vendas');
+ lista('#listaDespesas',despesas,x=>({titulo:x.descricao+' · '+brl(x.valor),sub:x.data}),'despesas');
+ lista('#listaEstoque',estoque,x=>({titulo:x.nome+' · '+x.quantidade+' '+x.unidade,sub:(x.quantidade<=x.minimo?'⚠️ Estoque baixo':'Estoque normal')+' · alerta em '+x.minimo+' '+x.unidade}),'estoque');
+ lista('#listaCardapio',produtos,x=>({titulo:x.nome+' · '+brl(x.preco),sub:'Custo: '+brl(x.custo)+' · Diferença: '+brl(x.preco-x.custo)}),'produtos');
+ const ultimas=[...vendas.map(x=>({nome:'Venda: '+x.produto,valor:x.valor,data:x.data,tipo:1})),...despesas.map(x=>({nome:'Despesa: '+x.descricao,valor:x.valor,data:x.data,tipo:-1}))].slice(-5).reverse();
+ $('#recentes').innerHTML=ultimas.length?'':'<p class="muted">Suas movimentações aparecerão aqui.</p>';
+ ultimas.forEach(x=>{const d=document.createElement('div');d.className='listitem';const a=document.createElement('span');a.textContent=x.nome+' · '+x.data;const b=document.createElement('strong');b.textContent=(x.tipo<0?'- ':'+ ')+brl(x.valor);d.append(a,b);$('#recentes').append(d)});
+}
+function enviar(formId,callback){
+ $(formId).addEventListener('submit',e=>{
+  e.preventDefault();const f=new FormData(e.target);callback(f);e.target.reset();render();alert('Registro salvo!');
+ });
+}
+enviar('#formVenda',f=>{vendas.push({produto:f.get('produto').trim(),valor:Number(f.get('valor')),pagamento:f.get('pagamento'),data:hoje()});gravar('vendas',vendas)});
+enviar('#formDespesa',f=>{despesas.push({descricao:f.get('descricao').trim(),valor:Number(f.get('valor')),data:hoje()});gravar('despesas',despesas)});
+enviar('#formEstoque',f=>{estoque.push({nome:f.get('nome').trim(),quantidade:Number(f.get('quantidade')),unidade:f.get('unidade').trim(),minimo:Number(f.get('minimo'))});gravar('estoque',estoque)});
+enviar('#formProduto',f=>{produtos.push({nome:f.get('nome').trim(),preco:Number(f.get('preco')),custo:Number(f.get('custo'))});gravar('produtos',produtos)});
+$('#exportar').onclick=()=>{
+ const dados={vendas,despesas,estoque,produtos};
+ const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='backup-manos-burguer.json';a.click();URL.revokeObjectURL(url);
+};
+render();
+</script>
+</body>
+</html>
