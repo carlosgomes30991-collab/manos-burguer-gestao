@@ -49,6 +49,14 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 .hrow .top span:last-child{color:var(--muted);white-space:nowrap}
 .track{background:#130f0d;border-radius:6px;height:10px;margin-top:6px;overflow:hidden}
 .fill{background:var(--orange);height:100%;border-radius:6px}
+/* venda rápida */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.qbtn{background:#130f0d;color:var(--cream);border:1px solid var(--orange);border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;font-size:15px}
+.qbtn span{color:var(--orange);font-weight:bold}
+.qbtn:active{background:var(--orange);color:#24150b}
+.qbtn:active span{color:#24150b}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--orange);color:#24150b;font-weight:bold;padding:12px 18px;border-radius:24px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+#toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -98,7 +106,13 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </section>
 
 <section id="vendas" class="hidden">
-<h2>Registrar venda</h2>
+<h2>Venda rápida</h2>
+<div class="formbox">
+<select id="pagRapido"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Outro</option></select>
+<div class="quick" id="botoesRapidos"></div>
+<p class="muted">Escolha a forma de pagamento e toque no produto: a venda é salva na hora, com o preço do Cardápio.</p>
+</div>
+<h2>Venda manual</h2>
 <div class="formbox">
 <form id="formVenda">
 <input name="produto" placeholder="Produto vendido" required>
@@ -155,6 +169,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 </div>
 <footer>MANO'S BURGUER · Gestão do seu negócio</footer>
 </main>
+<div id="toast"></div>
 <script>
 const $ = s => document.querySelector(s);
 const brl = n => Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -231,7 +246,24 @@ function graficos(){
  barras('#chartProdutos',Object.values(pr).sort((a,b)=>b.valor-a.valor).slice(0,5).map(p=>({nome:p.nome,valor:p.valor,texto:brl(p.valor)+' · '+p.qtd+'x'})));
 }
 
+function aviso(t){
+ const e=$('#toast');e.textContent='✅ '+t+' registrado';e.classList.add('show');
+ clearTimeout(window._t);window._t=setTimeout(()=>e.classList.remove('show'),1500);
+}
+function rapido(){
+ const a=$('#botoesRapidos');a.innerHTML='';
+ if(!produtos.length){a.innerHTML='<p class="muted" style="grid-column:1/-1">Cadastre seus hambúrgueres na aba Cardápio e eles aparecem aqui como botões.</p>';return}
+ produtos.forEach(p=>{
+  const b=document.createElement('button');b.className='qbtn';
+  const n=document.createElement('strong');n.textContent=p.nome;
+  const v=document.createElement('span');v.textContent=brl(p.preco);
+  b.append(n,v);
+  b.onclick=()=>{vendas.push({produto:p.nome,valor:p.preco,pagamento:$('#pagRapido').value,data:hoje()});gravar('vendas',vendas);render();aviso(p.nome)};
+  a.append(b);
+ });
+}
 function render(){
+ rapido();
  $('#totalVendas').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0));
  $('#totalDespesas').textContent=brl(despesas.reduce((s,x)=>s+x.valor,0));
  $('#saldo').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0)-despesas.reduce((s,x)=>s+x.valor,0));
@@ -263,4 +295,3 @@ render();
 </script>
 </body>
 </html>
-
