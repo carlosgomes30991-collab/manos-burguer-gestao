@@ -1,1192 +1,297 @@
-
-
-# Guia Completo para Deixar Seu Site Mais Profissional no GitHub Pages
-
-Vou criar um site profissional completo para o seu projeto no GitHub Pages, com design moderno e funcionalidades avançadas.
-
-## Estrutura do Projeto
-
-```
-manos-burguer-gestao/
-├── index.html
-├── css/
-│   └── estilo.css
-├── js/
-│   └── script.js
-├── imagens/ (opcional)
-└── README.md
-```
-
-## Código Completo
-
-### 1. index.html
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manos Burguer - Gestão Profissional</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/estilo.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171310">
+<title>Mano's Burguer Gestão</title>
+<style>
+:root{--bg:#100e0c;--panel:#201b17;--orange:#ff8b32;--cream:#fff0d7;--muted:#b8aaa0;--red:#e34d3e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:Arial,sans-serif}
+header{padding:24px 18px;background:#1a1511;border-bottom:1px solid #403027}
+header small{color:var(--orange);letter-spacing:2px;font-weight:bold}
+h1{font-size:23px;margin:8px 0 4px}
+header p{color:var(--muted);margin:0;font-size:13px}
+main{padding:16px;max-width:700px;margin:auto;padding-bottom:35px}
+nav{display:flex;gap:8px;overflow-x:auto;padding-bottom:15px}
+nav button{white-space:nowrap;background:var(--panel);color:var(--cream);border:1px solid #49362a;border-radius:10px;padding:12px}
+nav button.active,.primary{background:var(--orange);color:#24150b;border-color:var(--orange);font-weight:bold}
+h2{font-size:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card,.formbox{background:var(--panel);border:1px solid #3c2d23;border-radius:14px;padding:15px;margin-bottom:12px}
+.card small{color:var(--muted);display:block;margin-bottom:10px}
+.amount{font-size:22px;font-weight:bold;overflow-wrap:anywhere}
+.orange{color:var(--orange)}
+form{display:grid;gap:10px}
+input,select{width:100%;padding:13px;border-radius:9px;border:1px solid #544033;background:#130f0d;color:var(--cream);font-size:16px}
+button{cursor:pointer;font-size:14px}
+form button,.action{padding:13px;border:0;border-radius:9px}
+.listitem{padding:13px 0;border-bottom:1px solid #49362a;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.listitem:last-child{border:0}
+.listitem small{display:block;color:var(--muted);margin-top:5px}
+.delete{background:#40211c;color:#ffb0a6;border:0;border-radius:7px;padding:8px}
+.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.hidden{display:none}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+/* gráficos */
+.formbox h3{margin:0 0 4px;font-size:16px}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin:6px 0 12px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.chart{display:flex;gap:6px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bars{height:120px;width:100%;display:flex;gap:3px;align-items:flex-end;justify-content:center;border-bottom:1px solid #49362a}
+.bars i{flex:1;max-width:16px;border-radius:4px 4px 0 0;min-height:2px}
+.bv{background:var(--orange)}.bd{background:var(--red)}
+.col span{font-size:10px;color:var(--muted)}
+.hrow{margin:12px 0}
+.hrow .top{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.hrow .top span:last-child{color:var(--muted);white-space:nowrap}
+.track{background:#130f0d;border-radius:6px;height:10px;margin-top:6px;overflow:hidden}
+.fill{background:var(--orange);height:100%;border-radius:6px}
+/* venda rápida */
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 4px}
+.qbtn{background:#130f0d;color:var(--cream);border:1px solid var(--orange);border-radius:12px;padding:16px 8px;display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;font-size:15px}
+.qbtn span{color:var(--orange);font-weight:bold}
+.qbtn:active{background:var(--orange);color:#24150b}
+.qbtn:active span{color:#24150b}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--orange);color:#24150b;font-weight:bold;padding:12px 18px;border-radius:24px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+#toast.show{opacity:1}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="site-header">
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <i class="fas fa-hamburger"></i>
-                    <span>Manos Burguer</span>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="#hero">Início</a></li>
-                    <li><a href="#servicos">Serviços</a></li>
-                    <li><a href="#sobre">Sobre</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                </ul>
-                <div class="nav-actions">
-                    <button id="theme-toggle" class="theme-btn" aria-label="Alternar tema">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div class="mobile-menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>
+<header>
+  <small>MANO'S BURGUER</small>
+  <h1>Gestão Inteligente 🍔</h1>
+  <p>Seu negócio organizado, um dia de cada vez.</p>
+</header>
+<main>
+<nav>
+<button class="active" data-tab="inicio">Painel</button>
+<button data-tab="vendas">Vendas</button>
+<button data-tab="despesas">Despesas</button>
+<button data-tab="estoque">Estoque</button>
+<button data-tab="cardapio">Cardápio</button>
+</nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Gestão Profissional para Seu Negócio</h1>
-                    <p>Soluzões completas para a gestão do seu restaurante/hamburgueria com tecnologia de ponta</p>
-                    <div class="hero-buttons">
-                        <a href="#servicos" class="btn btn-primary">Conhecer Soluções</a>
-                        <a href="#contato" class="btn btn-outline">Fale Conosco</a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="floating-card">
-                        <i class="fas fa-chart-line"></i>
-                        <span>+35% Vendas</span>
-                    </div>
-                    <div class="floating-card card-2">
-                        <i class="fas fa-users"></i>
-                        <span>Equipe Otimizada</span>
-                    </div>
-                    <div class="floating-card card-3">
-                        <i class="fas fa-utensils"></i>
-                        <span>Cardápio Digital</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="inicio">
+<h2>Resumo do negócio</h2>
+<div class="grid">
+<div class="card"><small>Vendas registradas</small><div class="amount orange" id="totalVendas">R$ 0,00</div></div>
+<div class="card"><small>Despesas registradas</small><div class="amount" id="totalDespesas">R$ 0,00</div></div>
+<div class="card"><small>Saldo das movimentações</small><div class="amount" id="saldo">R$ 0,00</div></div>
+<div class="card"><small>Vendas lançadas</small><div class="amount" id="qtdVendas">0</div></div>
+</div>
 
-    <!-- Serviços -->
-    <section class="servicos" id="servicos">
-        <div class="container">
-            <div class="section-header">
-                <h2>Nossos Serviços</h2>
-                <p>Soluções completas para every aspecto do seu negócio</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <h3>Dashboard Avançado</h3>
-                    <p>Controle total de vendas, estoque e métricas em tempo real com relatórios detalhados.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Gráficos interativos</li>
-                        <li><i class="fas fa-check"></i> Previsão de demanda</li>
-                        <li><i class="fas fa-check"></i> Comparação de períodos</li>
-                    </ul>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Gestão de Equipe</h3>
-                    <p>Planejamento de turnos, controle de frequência e produtividade da equipe.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Controle de turnos</li>
-                        <li><i class="fas fa-check"></i> Avaliação de performance</li>
-                        <li><i class="fas fa-check"></i> Comunicação integrada</li>
-                    </ul>
-                </div>
-                
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <h3>Integração de Canais</h3>
-                    <p>Conecte seu restaurante a marketplaces, apps de delivery e sistemas de PDV.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Multi-delivery</li>
-                        <li><i class="fas fa-check"></i> Sincronização em tempo real</li>
-                        <li><i class="fas fa-check"></i> Central de pedidos</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="formbox">
+<h3>Últimos 7 dias</h3>
+<div class="legend"><span><b style="background:var(--orange)"></b>Vendas</span><span><b style="background:var(--red)"></b>Despesas</span></div>
+<div class="chart" id="chartDias"></div>
+</div>
+<div class="formbox">
+<h3>Vendas por forma de pagamento</h3>
+<div id="chartPagamento"></div>
+</div>
+<div class="formbox">
+<h3>Produtos mais vendidos</h3>
+<div id="chartProdutos"></div>
+</div>
 
-    <!-- Sobre -->
-    <section class="sobre" id="sobre">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>Por Que Escolher a Manos Burguer?</h2>
-                    <p>Com mais de 10 anos de experiência no mercado de restaurantes, desenvolvemos soluções que realmente entendem as necessidades do seu negócio.</p>
-                    
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number">200+</span>
-                            <span class="stat-label">Restaurantes atendidos</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">15</span>
-                            <span class="stat-label">Anos de experiência</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">98%</span>
-                            <span class="stat-label">Satisfação dos clientes</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-visual">
-                    <div class="about-card">
-                        <i class="fas fa-award"></i>
-                        <h3>Certificações</h3>
-                        <p>Parcerias com as melhores tecnologias do mercado</p>
-                    </div>
-                    <div class="about-card">
-                        <i class="fas fa-headset"></i>
-                        <h3>Suporte 24/7</h3>
-                        <p>Equipe técnica disponível para ajudar quando você precisar</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="formbox">
+<h3>Comece por aqui</h3>
+<p class="muted">Registre cada venda, lance suas despesas e mantenha seu estoque atualizado. O saldo é vendas menos despesas cadastradas; ainda não representa o lucro real se faltarem custos dos ingredientes e outras despesas.</p>
+</div>
+<h3>Últimas movimentações</h3>
+<div class="formbox" id="recentes"></div>
+</section>
 
-    <!-- Contato -->
-    <section class="contato" id="contato">
-        <div class="container">
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Entre em Contato</h2>
-                    <p>Estamos prontos para ajudar você a transformar seu negócio</p>
-                    
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div>
-                                <h3>Endereço</h3>
-                                <p>Rua das Hamburgueras, 123 - São Paulo, SP</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <div>
-                                <h3>Telefone</h3>
-                                <p>(11) 9999-9999</p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <h3>E-mail</h3>
-                                <p>contato@manosburguer.com</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact-form">
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label for="nome">Nome Completo</label>
-                            <input type="text" id="nome" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="telefone">Telefone</label>
-                            <input type="tel" id="telefone" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="mensagem">Mensagem</label>
-                            <textarea id="mensagem" rows="5" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Enviar Mensagem
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="vendas" class="hidden">
+<h2>Venda rápida</h2>
+<div class="formbox">
+<select id="pagRapido"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Outro</option></select>
+<div class="quick" id="botoesRapidos"></div>
+<p class="muted">Escolha a forma de pagamento e toque no produto: a venda é salva na hora, com o preço do Cardápio.</p>
+</div>
+<h2>Venda manual</h2>
+<div class="formbox">
+<form id="formVenda">
+<input name="produto" placeholder="Produto vendido" required>
+<input name="valor" type="number" min="0.01" step="0.01" placeholder="Valor recebido (R$)" required>
+<select name="pagamento"><option>Pix</option><option>Dinheiro</option><option>Cartão</option><option>Outro</option></select>
+<button class="primary">Salvar venda</button>
+</form>
+</div>
+<h3>Histórico de vendas</h3><div class="formbox" id="listaVendas"></div>
+</section>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="logo">
-                        <i class="fas fa-hamburger"></i>
-                        <span>Manos Burguer</span>
-                    </div>
-                    <p>Soluções inovadoras para gestão de negócios de alimentação há mais de uma década.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Links Rápidos</h3>
-                    <ul>
-                        <li><a href="#hero">Início</a></li>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="#sobre">Sobre</a></li>
-                        <li><a href="#contato">Contato</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h3>Contato</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> Rua das Hamburgueras, 123</li>
-                        <li><i class="fas fa-phone"></i> (11) 9999-9999</li>
-                        <li><i class="fas fa-envelope"></i> contato@manosburguer.com</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 Manos Burguer Gestão. Todos os direitos reservados.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+<section id="despesas" class="hidden">
+<h2>Registrar despesa</h2>
+<div class="formbox">
+<form id="formDespesa">
+<input name="descricao" placeholder="Ex.: carne, pão, gás" required>
+<input name="valor" type="number" min="0.01" step="0.01" placeholder="Valor pago (R$)" required>
+<button class="primary">Salvar despesa</button>
+</form>
+</div>
+<h3>Histórico de despesas</h3><div class="formbox" id="listaDespesas"></div>
+</section>
 
-    <script src="js/script.js"></script>
+<section id="estoque" class="hidden">
+<h2>Controle de estoque</h2>
+<div class="formbox">
+<form id="formEstoque">
+<input name="nome" placeholder="Ingrediente (ex.: carne)" required>
+<input name="quantidade" type="number" min="0" step="0.01" placeholder="Quantidade atual" required>
+<input name="unidade" placeholder="Unidade (kg, un., pacote...)" required>
+<input name="minimo" type="number" min="0" step="0.01" placeholder="Avisar quando chegar a" required>
+<button class="primary">Adicionar ao estoque</button>
+</form>
+</div>
+<div class="formbox" id="listaEstoque"></div>
+</section>
+
+<section id="cardapio" class="hidden">
+<h2>Cardápio e custos</h2>
+<div class="formbox">
+<form id="formProduto">
+<input name="nome" placeholder="Nome do hambúrguer" required>
+<input name="preco" type="number" min="0" step="0.01" placeholder="Preço de venda (R$)" required>
+<input name="custo" type="number" min="0" step="0.01" placeholder="Custo dos ingredientes (R$)" required>
+<button class="primary">Cadastrar hambúrguer</button>
+</form>
+</div>
+<div class="formbox" id="listaCardapio"></div>
+</section>
+
+<div class="formbox">
+<button class="action" id="exportar">Exportar meus dados</button>
+<p class="muted">Guarde uma cópia dos seus registros regularmente. Os dados ficam neste navegador.</p>
+</div>
+<footer>MANO'S BURGUER · Gestão do seu negócio</footer>
+</main>
+<div id="toast"></div>
+<script>
+const $ = s => document.querySelector(s);
+const brl = n => Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const hoje = () => new Date().toLocaleDateString('pt-BR');
+const ler = k => {try{return JSON.parse(localStorage.getItem('manos_'+k))||[]}catch(e){return []}};
+const gravar = (k,v) => localStorage.setItem('manos_'+k,JSON.stringify(v));
+let vendas=ler('vendas'), despesas=ler('despesas'), estoque=ler('estoque'), produtos=ler('produtos');
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+ b.classList.add('active');
+ document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));
+ $('#'+b.dataset.tab).classList.remove('hidden');
+});
+
+function lista(el,items,formatar,remover){
+ const area=$(el);
+ if(!items.length){area.innerHTML='<p class="muted">Nenhum registro por enquanto.</p>';return}
+ area.innerHTML='';
+ items.slice().reverse().forEach((item,revIndex)=>{
+  const idx=items.length-1-revIndex;
+  const div=document.createElement('div');div.className='listitem';
+  const info=document.createElement('div');
+  const titulo=document.createElement('strong');titulo.textContent=formatar(item).titulo;
+  const sub=document.createElement('small');sub.textContent=formatar(item).sub;
+  info.append(titulo,sub);
+  const del=document.createElement('button');del.className='delete';del.textContent='Excluir';
+  del.onclick=()=>{if(confirm('Excluir este registro?')){items.splice(idx,1);gravar(remover,items);render()}};
+  div.append(info,del);area.append(div);
+ });
+}
+
+function barras(el,itens){
+ const area=$(el);
+ if(!itens.length){area.innerHTML='<p class="muted">Sem dados ainda. Registre vendas para ver o gráfico.</p>';return}
+ area.innerHTML='';
+ const max=Math.max(...itens.map(i=>i.valor))||1;
+ itens.forEach(i=>{
+  const row=document.createElement('div');row.className='hrow';
+  const top=document.createElement('div');top.className='top';
+  const a=document.createElement('span');a.textContent=i.nome;
+  const b=document.createElement('span');b.textContent=i.texto;
+  top.append(a,b);
+  const track=document.createElement('div');track.className='track';
+  const fill=document.createElement('div');fill.className='fill';fill.style.width=(i.valor/max*100)+'%';
+  track.append(fill);row.append(top,track);area.append(row);
+ });
+}
+
+function graficos(){
+ // últimos 7 dias
+ const dias=[];
+ for(let i=6;i>=0;i--){
+  const d=new Date();d.setDate(d.getDate()-i);
+  dias.push({data:d.toLocaleDateString('pt-BR'),label:d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}),v:0,d:0});
+ }
+ vendas.forEach(x=>{const o=dias.find(y=>y.data===x.data);if(o)o.v+=x.valor});
+ despesas.forEach(x=>{const o=dias.find(y=>y.data===x.data);if(o)o.d+=x.valor});
+ const max=Math.max(1,...dias.flatMap(x=>[x.v,x.d]));
+ $('#chartDias').innerHTML=dias.map(x=>
+  `<div class="col"><div class="bars">`+
+  `<i class="bv" style="height:${x.v/max*100}%" title="Vendas: ${brl(x.v)}"></i>`+
+  `<i class="bd" style="height:${x.d/max*100}%" title="Despesas: ${brl(x.d)}"></i>`+
+  `</div><span>${x.label}</span></div>`).join('');
+
+ // por pagamento
+ const totalV=vendas.reduce((s,x)=>s+x.valor,0);
+ const pg={};vendas.forEach(x=>pg[x.pagamento]=(pg[x.pagamento]||0)+x.valor);
+ barras('#chartPagamento',Object.entries(pg).sort((a,b)=>b[1]-a[1]).map(([n,v])=>({nome:n,valor:v,texto:brl(v)+' · '+Math.round(v/totalV*100)+'%'})));
+
+ // produtos mais vendidos
+ const pr={};
+ vendas.forEach(x=>{const k=x.produto.trim().toLowerCase();pr[k]=pr[k]||{nome:x.produto.trim(),valor:0,qtd:0};pr[k].valor+=x.valor;pr[k].qtd++});
+ barras('#chartProdutos',Object.values(pr).sort((a,b)=>b.valor-a.valor).slice(0,5).map(p=>({nome:p.nome,valor:p.valor,texto:brl(p.valor)+' · '+p.qtd+'x'})));
+}
+
+function aviso(t){
+ const e=$('#toast');e.textContent='✅ '+t+' registrado';e.classList.add('show');
+ clearTimeout(window._t);window._t=setTimeout(()=>e.classList.remove('show'),1500);
+}
+function rapido(){
+ const a=$('#botoesRapidos');a.innerHTML='';
+ if(!produtos.length){a.innerHTML='<p class="muted" style="grid-column:1/-1">Cadastre seus hambúrgueres na aba Cardápio e eles aparecem aqui como botões.</p>';return}
+ produtos.forEach(p=>{
+  const b=document.createElement('button');b.className='qbtn';
+  const n=document.createElement('strong');n.textContent=p.nome;
+  const v=document.createElement('span');v.textContent=brl(p.preco);
+  b.append(n,v);
+  b.onclick=()=>{vendas.push({produto:p.nome,valor:p.preco,pagamento:$('#pagRapido').value,data:hoje()});gravar('vendas',vendas);render();aviso(p.nome)};
+  a.append(b);
+ });
+}
+function render(){
+ rapido();
+ $('#totalVendas').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0));
+ $('#totalDespesas').textContent=brl(despesas.reduce((s,x)=>s+x.valor,0));
+ $('#saldo').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0)-despesas.reduce((s,x)=>s+x.valor,0));
+ $('#qtdVendas').textContent=vendas.length;
+ graficos();
+ lista('#listaVendas',vendas,x=>({titulo:x.produto+' · '+brl(x.valor),sub:x.data+' · '+x.pagamento}),'vendas');
+ lista('#listaDespesas',despesas,x=>({titulo:x.descricao+' · '+brl(x.valor),sub:x.data}),'despesas');
+ lista('#listaEstoque',estoque,x=>({titulo:x.nome+' · '+x.quantidade+' '+x.unidade,sub:(x.quantidade<=x.minimo?'⚠️ Estoque baixo':'Estoque normal')+' · alerta em '+x.minimo+' '+x.unidade}),'estoque');
+ lista('#listaCardapio',produtos,x=>({titulo:x.nome+' · '+brl(x.preco),sub:'Custo: '+brl(x.custo)+' · Diferença: '+brl(x.preco-x.custo)}),'produtos');
+ const ultimas=[...vendas.map(x=>({nome:'Venda: '+x.produto,valor:x.valor,data:x.data,tipo:1})),...despesas.map(x=>({nome:'Despesa: '+x.descricao,valor:x.valor,data:x.data,tipo:-1}))].slice(-5).reverse();
+ $('#recentes').innerHTML=ultimas.length?'':'<p class="muted">Suas movimentações aparecerão aqui.</p>';
+ ultimas.forEach(x=>{const d=document.createElement('div');d.className='listitem';const a=document.createElement('span');a.textContent=x.nome+' · '+x.data;const b=document.createElement('strong');b.textContent=(x.tipo<0?'- ':'+ ')+brl(x.valor);d.append(a,b);$('#recentes').append(d)});
+}
+function enviar(formId,callback){
+ $(formId).addEventListener('submit',e=>{
+  e.preventDefault();const f=new FormData(e.target);callback(f);e.target.reset();render();alert('Registro salvo!');
+ });
+}
+enviar('#formVenda',f=>{vendas.push({produto:f.get('produto').trim(),valor:Number(f.get('valor')),pagamento:f.get('pagamento'),data:hoje()});gravar('vendas',vendas)});
+enviar('#formDespesa',f=>{despesas.push({descricao:f.get('descricao').trim(),valor:Number(f.get('valor')),data:hoje()});gravar('despesas',despesas)});
+enviar('#formEstoque',f=>{estoque.push({nome:f.get('nome').trim(),quantidade:Number(f.get('quantidade')),unidade:f.get('unidade').trim(),minimo:Number(f.get('minimo'))});gravar('estoque',estoque)});
+enviar('#formProduto',f=>{produtos.push({nome:f.get('nome').trim(),preco:Number(f.get('preco')),custo:Number(f.get('custo'))});gravar('produtos',produtos)});
+$('#exportar').onclick=()=>{
+ const dados={vendas,despesas,estoque,produtos};
+ const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='backup-manos-burguer.json';a.click();URL.revokeObjectURL(url);
+};
+render();
+</script>
 </body>
 </html>
-```
-
-### 2. css/estilo.css
-
-```css
-/* Variáveis de cores */
-:root {
-    --primary: #d32f2f;
-    --primary-dark: #b71c1c;
-    --secondary: #ff9800;
-    --dark: #212121;
-    --light: #f5f5f5;
-    --gray: #757575;
-    --white: #ffffff;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
-    --border-radius: 8px;
-}
-
-[data-theme="dark"] {
-    --primary: #ff5252;
-    --primary-dark: #ff1744;
-    --secondary: #ffb74d;
-    --dark: #f5f5f5;
-    --light: #212121;
-    --gray: #bdbdbd;
-    --white: #424242;
-    --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-}
-
-/* Reset e estilos base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    color: var(--dark);
-    background-color: var(--light);
-    transition: var(--transition);
-}
-
-h1, h2, h3, h4 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-}
-
-p {
-    margin-bottom: 1rem;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-ul {
-    list-style: none;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header */
-.site-header {
-    background-color: var(--white);
-    box-shadow: var(--shadow);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    transition: var(--transition);
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.logo i {
-    font-size: 1.8rem;
-}
-
-.nav-links {
-    display: flex;
-    gap: 2rem;
-}
-
-.nav-links a {
-    font-weight: 500;
-    transition: var(--transition);
-    position: relative;
-    padding: 5px 0;
-}
-
-.nav-links a:hover {
-    color: var(--primary);
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--primary);
-    transition: var(--transition);
-}
-
-.nav-links a:hover::after {
-    width: 100%;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.theme-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.theme-btn:hover {
-    background-color: var(--primary-dark);
-    transform: rotate(30deg);
-}
-
-.mobile-menu {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* Hero Section */
-.hero {
-    padding: 150px 0 100px;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--white);
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,202.7C672,203,768,181,864,170.7C960,160,1056,160,1152,170.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-    background-size: cover;
-    background-position: center;
-}
-
-.hero-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-text h1 {
-    font-size: 3rem;
-    color: var(--white);
-    margin-bottom: 1.5rem;
-}
-
-.hero-text p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 30px;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: var(--transition);
-    cursor: pointer;
-    border: none;
-    font-size: 1rem;
-}
-
-.btn-primary {
-    background-color: var(--secondary);
-    color: var(--white);
-}
-
-.btn-primary:hover {
-    background-color: #e68900;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.btn-outline {
-    background-color: transparent;
-    color: var(--white);
-    border: 2px solid var(--white);
-}
-
-.btn-outline:hover {
-    background-color: var(--white);
-    color: var(--primary);
-    transform: translateY(-3px);
-}
-
-.hero-visual {
-    position: relative;
-    height: 400px;
-}
-
-.floating-card {
-    position: absolute;
-    background-color: var(--white);
-    padding: 15px 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-    animation: float 5s ease-in-out infinite;
-}
-
-.floating-card i {
-    font-size: 1.5rem;
-    color: var(--primary);
-}
-
-.floating-card span {
-    color: var(--dark);
-}
-
-.floating-card:nth-child(1) {
-    top: 10%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.floating-card:nth-child(2) {
-    top: 50%;
-    right: 10%;
-    animation-delay: 1s;
-}
-
-.floating-card:nth-child(3) {
-    bottom: 10%;
-    left: 20%;
-    animation-delay: 2s;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-/* Serviços */
-.servicos {
-    padding: 100px 0;
-    background-color: var(--white);
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    color: var(--dark);
-    margin-bottom: 1rem;
-}
-
-.section-header p {
-    color: var(--gray);
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.service-card {
-    background-color: var(--white);
-    border-radius: var(--border-radius);
-    padding: 30px;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.service-icon {
-    width: 70px;
-    height: 70px;
-    background-color: rgba(211, 47, 47, 0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.service-icon i {
-    font-size: 2rem;
-    color: var(--primary);
-}
-
-.service-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--dark);
-}
-
-.service-card p {
-    color: var(--gray);
-    margin-bottom: 1.5rem;
-}
-
-.service-features {
-    list-style: none;
-}
-
-.service-features li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    color: var(--dark);
-}
-
-.service-features i {
-    color: var(--primary);
-    font-size: 1.2rem;
-}
-
-/* Sobre */
-.sobre {
-    padding: 100px 0;
-    background-color: var(--light);
-}
-
-.about-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-}
-
-.about-text h2 {
-    font-size: 2.5rem;
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-}
-
-.about-text p {
-    color: var(--gray);
-    margin-bottom: 2rem;
-}
-
-.about-stats {
-    display: flex;
-    gap: 30px;
-    margin-top: 2rem;
-}
-
-.stat {
-    text-align: center;
-}
-
-.stat-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary);
-    font-family: 'Montserrat', sans-serif;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: var(--gray);
-}
-
-.about-visual {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.about-card {
-    background-color: var(--white);
-    padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-}
-
-.about-card:hover {
-    transform: translateX(10px);
-}
-
-.about-card i {
-    font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 15px;
-}
-
-.about-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-    color: var(--dark);
-}
-
-.about-card p {
-    color: var(--gray);
-    margin: 0;
-}
-
-/* Contato */
-.contato {
-    padding: 100px 0;
-    background-color: var(--white);
-}
-
-.contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-}
-
-.contact-info h2 {
-    font-size: 2.5rem;
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-}
-
-.contact-info p {
-    color: var(--gray);
-    margin-bottom: 2rem;
-}
-
-.contact-details {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-.contact-item i {
-    font-size: 1.5rem;
-    color: var(--primary);
-    margin-top: 5px;
-}
-
-.contact-item h3 {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-    color: var(--dark);
-}
-
-.contact-item p {
-    margin: 0;
-    color: var(--gray);
-}
-
-.contact-form {
-    background-color: var(--light);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--dark);
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: var(--transition);
-    background-color: var(--white);
-    color: var(--dark);
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
-}
-
-/* Footer */
-.site-footer {
-    background-color: var(--dark);
-    color: var(--white);
-    padding: 60px 0 30px;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 40px;
-}
-
-.footer-about .logo {
-    margin-bottom: 15px;
-}
-
-.footer-about p {
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 300px;
-}
-
-.footer-links h3,
-.footer-contact h3 {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    color: var(--white);
-}
-
-.footer-links ul,
-.footer-contact ul {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.footer-links a,
-.footer-contact li {
-    color: rgba(255, 255, 255, 0.7);
-    transition: var(--transition);
-}
-
-.footer-links a:hover,
-.footer-contact li:hover {
-    color: var(--secondary);
-    padding-left: 5px;
-}
-
-.footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-bottom p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.social-links {
-    display: flex;
-    gap: 15px;
-}
-
-.social-links a {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.social-links a:hover {
-    background-color: var(--primary);
-    transform: translateY(-3px);
-}
-
-/* Responsividade */
-@media (max-width: 992px) {
-    .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-    }
-    
-    .hero-visual {
-        order: -1;
-        margin-bottom: 30px;
-    }
-    
-    .about-content {
-        grid-template-columns: 1fr;
-    }
-    
-    .contact-content {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--white);
-        flex-direction: column;
-        padding: 20px;
-        gap: 15px;
-        box-shadow: var(--shadow);
-        display: none;
-    }
-    
-    .nav-links.active {
-        display: flex;
-    }
-    
-    .mobile-menu {
-        display: block;
-    }
-    
-    .hero-text h1 {
-        font-size: 2.2rem;
-    }
-    
-    .hero-text p {
-        font-size: 1.1rem;
-    }
-    
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .about-stats {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .footer-bottom {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero {
-        padding: 120px 0 80px;
-    }
-    
-    .hero-text h1 {
-        font-size: 1.8rem;
-    }
-    
-    .btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-    
-    .service-card {
-        padding: 20px;
-    }
-    
-    .about-stats {
-        gap: 20px;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-    }
-}
-
-/* Animações de entrada */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-```
-
-### 3. js/script.js
-
-```javascript
-// Theme Toggle
-const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = themeToggle.querySelector('i');
-
-themeToggle.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    
-    if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-    }
-});
-
-// Mobile Menu
-const mobileMenu = document.querySelector('.mobile-menu');
-const navLinks = document.querySelector('.nav-links');
-
-mobileMenu.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    mobileMenu.querySelector('i').classList.toggle('fa-times');
-});
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        mobileMenu.querySelector('i').classList.remove('fa-times');
-    });
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// Header background on scroll
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('.site-header');
-    if (window.scrollY > 50) {
-        header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        header.style.backdropFilter = 'blur(10px)';
-    } else {
-        header.style.backgroundColor = 'var(--white)';
-        header.style.backdropFilter = 'none';
-    }
-});
-
-// Contact Form
-const contactForm = document.getElementById('contactForm');
-
-contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Simulate form submission
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-    submitBtn.disabled = true;
-    
-    setTimeout(() => {
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Mensagem Enviada!';
-        submitBtn.style.backgroundColor = '#4CAF50';
-        
-        // Reset form after 3 seconds
-        setTimeout(() => {
-            contactForm.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.style.backgroundColor = '';
-            submitBtn.disabled = false;
-        }, 3000);
-    }, 1500);
-});
-
-// Scroll animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, observerOptions);
-
-// Add fade-in class to sections and observe them
-document.querySelectorAll('.hero-text, .service-card, .about-text, .about-visual, .contact-info, .contact-form').forEach(el => {
-    el.classList.add('fade-in');
-    observer.observe(el);
-});
-```
-
-## Como Usar no GitHub Pages
-
-1. Crie um repositório no GitHub
-2. Faça upload dos arquivos acima mantendo a estrutura de pastas
-3. Habilite o GitHub Pages em Settings > Pages
-4. Seu site estará disponível em: `https://seu-nome.github.io/manos-burguer-gestao/`
-
-## Principais Melhorias Profissionais
-
-✅ **Design Moderno**: Layout clean com cores consistentes  
-✅ **Responsividade**: Funciona perfeitamente em todos os dispositivos  
-✅ **Tema Escuro/Claro**: Alternador de tema integrado  
-✅ **Animações Suaves**: Efeitos de hover e scroll animations  
-✅ **Formulário de Contato**: Com validação e feedback visual  
-✅ **Navegação Intuitiva**: Menu responsivo com scroll suave  
-✅ **Componentes Reutilizáveis**: Cards, botões e seções consistentes  
-
-Este site está pronto para uso profissional e pode ser facilmente personalizado conforme necessário!
