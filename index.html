@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -35,6 +34,21 @@ form button,.action{padding:13px;border:0;border-radius:9px}
 .muted{color:var(--muted);font-size:13px;line-height:1.5}
 .hidden{display:none}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+/* gráficos */
+.formbox h3{margin:0 0 4px;font-size:16px}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin:6px 0 12px}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.chart{display:flex;gap:6px}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
+.bars{height:120px;width:100%;display:flex;gap:3px;align-items:flex-end;justify-content:center;border-bottom:1px solid #49362a}
+.bars i{flex:1;max-width:16px;border-radius:4px 4px 0 0;min-height:2px}
+.bv{background:var(--orange)}.bd{background:var(--red)}
+.col span{font-size:10px;color:var(--muted)}
+.hrow{margin:12px 0}
+.hrow .top{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.hrow .top span:last-child{color:var(--muted);white-space:nowrap}
+.track{background:#130f0d;border-radius:6px;height:10px;margin-top:6px;overflow:hidden}
+.fill{background:var(--orange);height:100%;border-radius:6px}
 </style>
 </head>
 <body>
@@ -60,6 +74,21 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
 <div class="card"><small>Saldo das movimentações</small><div class="amount" id="saldo">R$ 0,00</div></div>
 <div class="card"><small>Vendas lançadas</small><div class="amount" id="qtdVendas">0</div></div>
 </div>
+
+<div class="formbox">
+<h3>Últimos 7 dias</h3>
+<div class="legend"><span><b style="background:var(--orange)"></b>Vendas</span><span><b style="background:var(--red)"></b>Despesas</span></div>
+<div class="chart" id="chartDias"></div>
+</div>
+<div class="formbox">
+<h3>Vendas por forma de pagamento</h3>
+<div id="chartPagamento"></div>
+</div>
+<div class="formbox">
+<h3>Produtos mais vendidos</h3>
+<div id="chartProdutos"></div>
+</div>
+
 <div class="formbox">
 <h3>Comece por aqui</h3>
 <p class="muted">Registre cada venda, lance suas despesas e mantenha seu estoque atualizado. O saldo é vendas menos despesas cadastradas; ainda não representa o lucro real se faltarem custos dos ingredientes e outras despesas.</p>
@@ -157,11 +186,57 @@ function lista(el,items,formatar,remover){
   div.append(info,del);area.append(div);
  });
 }
+
+function barras(el,itens){
+ const area=$(el);
+ if(!itens.length){area.innerHTML='<p class="muted">Sem dados ainda. Registre vendas para ver o gráfico.</p>';return}
+ area.innerHTML='';
+ const max=Math.max(...itens.map(i=>i.valor))||1;
+ itens.forEach(i=>{
+  const row=document.createElement('div');row.className='hrow';
+  const top=document.createElement('div');top.className='top';
+  const a=document.createElement('span');a.textContent=i.nome;
+  const b=document.createElement('span');b.textContent=i.texto;
+  top.append(a,b);
+  const track=document.createElement('div');track.className='track';
+  const fill=document.createElement('div');fill.className='fill';fill.style.width=(i.valor/max*100)+'%';
+  track.append(fill);row.append(top,track);area.append(row);
+ });
+}
+
+function graficos(){
+ // últimos 7 dias
+ const dias=[];
+ for(let i=6;i>=0;i--){
+  const d=new Date();d.setDate(d.getDate()-i);
+  dias.push({data:d.toLocaleDateString('pt-BR'),label:d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'}),v:0,d:0});
+ }
+ vendas.forEach(x=>{const o=dias.find(y=>y.data===x.data);if(o)o.v+=x.valor});
+ despesas.forEach(x=>{const o=dias.find(y=>y.data===x.data);if(o)o.d+=x.valor});
+ const max=Math.max(1,...dias.flatMap(x=>[x.v,x.d]));
+ $('#chartDias').innerHTML=dias.map(x=>
+  `<div class="col"><div class="bars">`+
+  `<i class="bv" style="height:${x.v/max*100}%" title="Vendas: ${brl(x.v)}"></i>`+
+  `<i class="bd" style="height:${x.d/max*100}%" title="Despesas: ${brl(x.d)}"></i>`+
+  `</div><span>${x.label}</span></div>`).join('');
+
+ // por pagamento
+ const totalV=vendas.reduce((s,x)=>s+x.valor,0);
+ const pg={};vendas.forEach(x=>pg[x.pagamento]=(pg[x.pagamento]||0)+x.valor);
+ barras('#chartPagamento',Object.entries(pg).sort((a,b)=>b[1]-a[1]).map(([n,v])=>({nome:n,valor:v,texto:brl(v)+' · '+Math.round(v/totalV*100)+'%'})));
+
+ // produtos mais vendidos
+ const pr={};
+ vendas.forEach(x=>{const k=x.produto.trim().toLowerCase();pr[k]=pr[k]||{nome:x.produto.trim(),valor:0,qtd:0};pr[k].valor+=x.valor;pr[k].qtd++});
+ barras('#chartProdutos',Object.values(pr).sort((a,b)=>b.valor-a.valor).slice(0,5).map(p=>({nome:p.nome,valor:p.valor,texto:brl(p.valor)+' · '+p.qtd+'x'})));
+}
+
 function render(){
  $('#totalVendas').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0));
  $('#totalDespesas').textContent=brl(despesas.reduce((s,x)=>s+x.valor,0));
  $('#saldo').textContent=brl(vendas.reduce((s,x)=>s+x.valor,0)-despesas.reduce((s,x)=>s+x.valor,0));
  $('#qtdVendas').textContent=vendas.length;
+ graficos();
  lista('#listaVendas',vendas,x=>({titulo:x.produto+' · '+brl(x.valor),sub:x.data+' · '+x.pagamento}),'vendas');
  lista('#listaDespesas',despesas,x=>({titulo:x.descricao+' · '+brl(x.valor),sub:x.data}),'despesas');
  lista('#listaEstoque',estoque,x=>({titulo:x.nome+' · '+x.quantidade+' '+x.unidade,sub:(x.quantidade<=x.minimo?'⚠️ Estoque baixo':'Estoque normal')+' · alerta em '+x.minimo+' '+x.unidade}),'estoque');
@@ -188,3 +263,4 @@ render();
 </script>
 </body>
 </html>
+
